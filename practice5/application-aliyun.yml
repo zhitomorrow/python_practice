@@ -1,0 +1,107 @@
+server:
+  port: 80
+logging:
+  level:
+    web: info
+    platform: info
+spring:
+  data:
+    mongodb:
+      uri: mongodb://spider1:spider1@147.211.188.158:37017/spider
+  jpa.properties.hibernate.hbm2ddl.auto: none # 主从库必须使用none
+  datasource: # 设置数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://247.210.44.200:53306/spider?characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: spider
+    password:
+  shardingsphere:
+    #是否开启shardingsphere，为false时走默认数据库，需要配置spring.datasource
+    enabled: true
+    datasource:
+      names: master,slave0,slave1
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://147.210.44.200:43306/spider?characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+        username: spider
+        password: Bjcr.123_spider
+        filters: stat,wall,logback
+      slave0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://147.130.219.88:23306/spider?characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+        username: spider
+        password:
+      slave1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://147.121.88.58:13306/spider?characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+        username: root
+        password:
+    masterslave:
+      load-balance-algorithm-type: round_robin
+      name: ms
+      master-data-source-name: master
+      slave-data-source-names: slave0,slave1
+    props:
+      sql:
+        show: false
+  rabbitmq:
+    host: 147.120.151.186
+    port: 5672
+    username: spider
+    password:
+    virtual-host: spider
+    listener:
+      simple:
+        acknowledge-mode: manual
+      direct:
+        acknowledge-mode: manual
+  kafka: # 设置Kafka
+    bootstrap-servers: 222.94.152.113:19093
+    producer:
+      max-request-size: 104857600 #默认值1048576
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 40960
+      buffer-memory: 33554432 #默认值33554432
+      retries: 0 #默认值是0
+  redis:
+    host: 47.111.188.158
+    port: 6379
+    timeout: PT60S
+    database: 0
+    password:
+platform: # 系统参数
+  parameters:
+#    platformTitle: 采集平台
+    chromePath: C:/Program Files (x86)/Google/Chrome/Application/chrome.exe
+    all-message-queue: qd-mq
+    scanLocalTask: true
+    local-ip-address: 47.105.218.213
+    sysFileFtp: sftp://kucai:bjcr123$%^@47.110.151.186
+    overseasProxy: 108.31.226.214:11080
+    overseas-proxy-account: 108.131.226.214:11080
+    overseas-proxy-download-video: 118.31.226.214:31080
+    overseas-proxy-download-resource: 118.31.226.222:41080
+    youtubeSpiderApiPath: http://118.31.226.214:8088/api/youtube/
+    facebook-spider-api-path-dalian: http://172.16.165.100:8001/api/facebook/
+    facebook-spider-api-path-python: http://47.110.229.188:18080/api/facebook/
+    resourcePath: http://147.110.151.176:9999/
+    hideWebDriver: false
+    ftpClientPoolSize: 33
+    executeDownloadMaxnum: 5
+    executeDownloadVideoMaxnum: 3
+    executeDownloadOutterMaxnum: 10
+    executeDownloadOutterVideoMaxnum: 6
+    executeGatherTaskMaxnum: 3
+    execute-gather-task-maxnum-facebook: 5
+    execute-gather-task-maxnum-twitter: 6
+    execute-gather-task-maxnum-youtube: 3
+    execute-gather-task-maxnum-wechat: 3
+    executePushMaxnum: 10
+    saveResourceLog: true
+    scheduler: 
+      account: 
+        enabled: true
