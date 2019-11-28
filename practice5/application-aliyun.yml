@@ -75,7 +75,6 @@ spring:
     password:
 platform: # 系统参数
   parameters:
-#    platformTitle: 采集平台
     chromePath: C:/Program Files (x86)/Google/Chrome/Application/chrome.exe
     all-message-queue: qd-mq
     scanLocalTask: true
