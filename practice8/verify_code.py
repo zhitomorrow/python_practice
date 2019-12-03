@@ -19,4 +19,5 @@ def create_verify_code():
     return code
 
 
-print(create_verify_code())
+x = create_verify_code()
+print(x)
